@@ -28,3 +28,7 @@
 
 - Correct GitHub reference (Skyrocket)
 - Rename plugin (Skyrocket)
+
+## 2.0.3 - Remove year tag
+
+- Remove year, already included in publication

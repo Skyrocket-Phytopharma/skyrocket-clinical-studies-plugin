@@ -271,7 +271,6 @@ class Skyrocket_Clinical_Studies
                             <?php if (!empty($study['publication'])): ?>
                                 <span class="clinical-study-publication">
                                     <?php echo esc_html($study['publication']); ?>
-                                    (<?php echo esc_html($study['year']); ?>)
                                 </span>
                             <?php endif; ?>
                         </div>
