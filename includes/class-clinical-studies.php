@@ -14,7 +14,7 @@ class Skyrocket_Clinical_Studies
     public function __construct()
     {
         error_log("__construct");
-        add_shortcode('clinical_studies', array($this, 'render_shortcode'));
+        add_shortcode('skyrocket_clinical_studies', array($this, 'render_shortcode'));
 
         $enqueue_styles = true;
         if ($enqueue_styles) {
@@ -162,12 +162,14 @@ class Skyrocket_Clinical_Studies
         $atts = shortcode_atts(array(
             'scope' => 'neuropad',
             'from' => '',
+            'priority' => '',
             'max-count' => '',
             'sort-by' => 'priority',
-        ), $atts, 'clinical_studies');
+        ), $atts, 'skyrocket_clinical_studies');
 
         $scope = sanitize_text_field(strtolower($atts['scope']));
         $from_year = !empty($atts['from']) ? (int) $atts['from'] : 0;
+        $max_priority = ($atts['priority'] !== '' && is_numeric($atts['priority'])) ? (int) $atts['priority'] : null;
         $max_count = !empty($atts['max-count']) ? (int) $atts['max-count'] : 0;
         $sort_by = sanitize_text_field(strtolower($atts['sort-by']));
 
@@ -185,7 +187,15 @@ class Skyrocket_Clinical_Studies
             });
         }
 
-        // 2. Sort studies
+        // 2. Filter by priority (<= specified priority)
+        if ($max_priority !== null) {
+            $studies = array_filter($studies, function ($study) use ($max_priority) {
+                $priority = isset($study['priority']) ? (int) $study['priority'] : 999;
+                return $priority <= $max_priority;
+            });
+        }
+
+        // 3. Sort studies
         usort($studies, function ($a, $b) use ($sort_by) {
             $y1 = isset($a['year']) ? (int) $a['year'] : 0;
             $y2 = isset($b['year']) ? (int) $b['year'] : 0;
@@ -219,7 +229,7 @@ class Skyrocket_Clinical_Studies
             }
         });
 
-        // 3. Limit maximum records if specified
+        // 4. Limit maximum records if specified
         if ($max_count > 0) {
             $studies = array_slice($studies, 0, $max_count);
         }
@@ -261,6 +271,7 @@ class Skyrocket_Clinical_Studies
                             <?php if (!empty($study['publication'])): ?>
                                 <span class="clinical-study-publication">
                                     <?php echo esc_html($study['publication']); ?>
+                                    (<?php echo esc_html($study['year']); ?>)
                                 </span>
                             <?php endif; ?>
                         </div>
