@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Clinical Studies Viewer
+ * Plugin Name: Skyrocket Clinical Studies Viewer
  * Description: Fetches and displays remote clinical studies JSON data from GitHub using a shortcode.
- * Version:     2.0.1
+ * Version:     2.0.2
  * Author:      Skyrocket Digital Development
  * Text Domain: clinical-studies-viewer
  */
@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 
 // GitHub updater configuration.
 $github_updater_config = [
-    'username' => 'lavamitts',
+    'username' => 'Skyrocket-Phytopharma',
     'repository' => 'skyrocket-clinical-studies',
     'plugin_file' => __FILE__,
 ];

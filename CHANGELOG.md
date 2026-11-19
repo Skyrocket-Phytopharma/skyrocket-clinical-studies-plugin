@@ -23,3 +23,8 @@
 
 - Add in priority field
 - Display year of publication
+
+## 2.0.2 - Correct GitHub reference and rename plugin
+
+- Correct GitHub reference (Skyrocket)
+- Rename plugin (Skyrocket)
