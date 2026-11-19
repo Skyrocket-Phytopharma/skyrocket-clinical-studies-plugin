@@ -29,5 +29,9 @@ node_modules/
 # Distributions
 /dist/
 
-# Local guidance
-GUIDANCE.md
+
+# Microsoft Office temporary/owner files
+~$*
+
+# Other temporary files beginning with a tilde
+~*

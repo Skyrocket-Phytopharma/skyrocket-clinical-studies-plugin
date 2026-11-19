@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 // GitHub updater configuration.
 $github_updater_config = [
     'username' => 'Skyrocket-Phytopharma',
-    'repository' => 'skyrocket-clinical-studies',
+    'repository' => 'skyrocket-clinical-studies-plugin',
     'plugin_file' => __FILE__,
 ];
 
