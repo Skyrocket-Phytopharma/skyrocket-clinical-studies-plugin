@@ -10,24 +10,19 @@ class Skyrocket_Clinical_Studies
         'monofilament' => 'https://raw.githubusercontent.com/Skyrocket-Phytopharma/clinical-studies-management/refs/heads/main/resources/json/monofilament_clinical_studies.json',
     );
     private $cache_expiration = 12 * HOUR_IN_SECONDS;
+    private $style_registered = false;
 
     public function __construct()
     {
-        error_log("__construct");
         add_shortcode('skyrocket_clinical_studies', array($this, 'render_shortcode'));
-
-        $enqueue_styles = true;
-        if ($enqueue_styles) {
-            add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
-        }
+        add_action('wp_enqueue_scripts', array($this, 'register_styles'));
     }
 
     /**
-     * Enqueue default inline CSS for responsive styling.
+     * Register inline CSS for responsive styling (enqueued only when shortcode renders).
      */
-    public function enqueue_styles()
+    public function register_styles()
     {
-        error_log("enqueue_styles");
         $css = "
             .clinical-studies-list {
                 margin: 20px 0;
@@ -74,9 +69,11 @@ class Skyrocket_Clinical_Studies
                 margin-right: 8px;
             }
         ";
+
         wp_register_style('clinical-studies-style', false);
         wp_enqueue_style('clinical-studies-style');
         wp_add_inline_style('clinical-studies-style', $css);
+        $this->style_registered = true;
     }
 
     /**
@@ -97,8 +94,6 @@ class Skyrocket_Clinical_Studies
         $args = array(
             'timeout' => 15,
             'redirection' => 5,
-            'sslverify' => false,
-            'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'headers' => array(
                 'Accept' => 'application/json, text/plain, */*',
             ),
@@ -125,6 +120,11 @@ class Skyrocket_Clinical_Studies
             return false;
         }
 
+        if (empty($data)) {
+            error_log('Clinical Studies Empty JSON Array (' . $scope . ')');
+            return false;
+        }
+
         set_transient($transient_key, $data, $this->cache_expiration);
 
         return $data;
@@ -136,15 +136,16 @@ class Skyrocket_Clinical_Studies
     private function format_authors($authors)
     {
         if (!is_array($authors)) {
-            return esc_html($authors);
+            return esc_html((string) $authors);
         }
 
         $formatted = array();
         $count = count($authors);
 
         for ($i = 0; $i < $count; $i++) {
-            if ($i < $count - 1 && $authors[$i + 1] !== 'et al.' && strlen($authors[$i + 1]) <= 6) {
-                $formatted[] = $authors[$i] . ' ' . $authors[$i + 1];
+            $next = $authors[$i + 1] ?? null;
+            if ($i < $count - 1 && is_string($next) && $next !== 'et al.' && strlen($next) <= 6) {
+                $formatted[] = $authors[$i] . ' ' . $next;
                 $i++;
             } else {
                 $formatted[] = $authors[$i];
@@ -159,6 +160,10 @@ class Skyrocket_Clinical_Studies
      */
     public function render_shortcode($atts)
     {
+        if ($this->style_registered) {
+            wp_enqueue_style('clinical-studies-style');
+        }
+
         $atts = shortcode_atts(array(
             'scope' => 'neuropad',
             'from' => '',

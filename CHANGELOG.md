@@ -32,3 +32,15 @@
 ## 2.0.3 - Remove year tag
 
 - Remove year, already included in publication
+
+## 2.0.4 - Mutiple small enhancements
+
+- **Conditional Style Enqueueing**: Deferred wp_enqueue_style('clinical-studies-style') from the wp_enqueue_scripts hook into render_shortcode() so inline styles are only loaded on pages that actually render the shortcode.
+
+- **Priority Filtering**: Added support for the priority shortcode attribute to filter records where priority is less than or equal to the specified value.
+
+- **Shortcode & Style Defaults**: Enabled default style registration/enqueueing.
+
+- **Fetching & Caching Hardening**: Removed custom browser user-agent spoofing and disabled SSL verification overrides in wp_remote_get(), and prevented empty decoded JSON arrays from being cached.
+
+- **Author Formatting & Cleanup**: Added string type checks when pairing author surnames with initials in format_authors(), removed temporary debug error_log() calls, and deduplicated the priority sort branch.
