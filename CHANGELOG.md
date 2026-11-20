@@ -44,3 +44,7 @@
 - **Fetching & Caching Hardening**: Removed custom browser user-agent spoofing and disabled SSL verification overrides in wp_remote_get(), and prevented empty decoded JSON arrays from being cached.
 
 - **Author Formatting & Cleanup**: Added string type checks when pairing author surnames with initials in format_authors(), removed temporary debug error_log() calls, and deduplicated the priority sort branch.
+
+## 2.0.5 - Allow display and bulleted or numbered list
+
+- Allow display and bulleted or numbered list

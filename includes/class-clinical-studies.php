@@ -29,6 +29,10 @@ class Skyrocket_Clinical_Studies
                 padding: 0;
                 list-style: none;
             }
+            ol.clinical-studies-list {
+                list-style: decimal;
+                padding-left: 24px;
+            }
             .clinical-study-item {
                 margin-bottom: 24px;
                 padding: 20px;
@@ -170,6 +174,7 @@ class Skyrocket_Clinical_Studies
             'priority' => '',
             'max-count' => '',
             'sort-by' => 'priority',
+            'list-type' => 'ul',
         ), $atts, 'skyrocket_clinical_studies');
 
         $scope = sanitize_text_field(strtolower($atts['scope']));
@@ -177,6 +182,11 @@ class Skyrocket_Clinical_Studies
         $max_priority = ($atts['priority'] !== '' && is_numeric($atts['priority'])) ? (int) $atts['priority'] : null;
         $max_count = !empty($atts['max-count']) ? (int) $atts['max-count'] : 0;
         $sort_by = sanitize_text_field(strtolower($atts['sort-by']));
+        $list_type = sanitize_text_field(strtolower($atts['list-type']));
+
+        if (!in_array($list_type, array('ul', 'ol'), true)) {
+            $list_type = 'ul';
+        }
 
         $studies = $this->get_studies_data($scope);
 
@@ -246,7 +256,7 @@ class Skyrocket_Clinical_Studies
         ob_start();
         ?>
         <div class="clinical-studies-container">
-            <ul class="clinical-studies-list">
+            <<?php echo $list_type; ?> class="clinical-studies-list">
                 <?php foreach ($studies as $study): ?>
                     <li class="clinical-study-item">
                         <h3 class="clinical-study-title">
@@ -281,7 +291,7 @@ class Skyrocket_Clinical_Studies
                         </div>
                     </li>
                 <?php endforeach; ?>
-            </ul>
+            </<?php echo $list_type; ?>>
         </div>
         <?php
         return ob_get_clean();

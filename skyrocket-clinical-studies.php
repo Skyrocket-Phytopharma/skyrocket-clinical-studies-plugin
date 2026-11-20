@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Skyrocket Clinical Studies Viewer
  * Description: Fetches and displays remote clinical studies JSON data from GitHub using a shortcode.
- * Version:     2.0.4
+ * Version:     2.0.5
  * Author:      Skyrocket Digital Development
  * Text Domain: clinical-studies-viewer
  */
