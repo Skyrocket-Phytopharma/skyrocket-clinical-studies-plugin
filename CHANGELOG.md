@@ -49,3 +49,7 @@
 
 - Allow display and bulleted or numbered list
 - Defaults to ul
+
+## 2.0.6 - Link to the snippets from the plugin window
+
+- Link to the snippets from the plugin window
