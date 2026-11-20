@@ -48,3 +48,4 @@
 ## 2.0.5 - Allow display and bulleted or numbered list
 
 - Allow display and bulleted or numbered list
+- Defaults to ul
